@@ -2,6 +2,9 @@ name: Test with vars
 
 on:
   workflow_call:
+  push:
+    branches:
+      - main
 
 jobs:
 
