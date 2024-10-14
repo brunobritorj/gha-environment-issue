@@ -1,0 +1,32 @@
+name: Test with vars
+
+on:
+  workflow_call:
+
+jobs:
+
+  var-from-repo:
+    name: Get variable from repository
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        FRUIT: ${{ fromJson(vars.FRUITS_REPO) }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Value of FRUIT is $FRUIT"
+
+  var-from-env:
+    needs: var-from-repo
+    name: Get variable from environment
+    runs-on: ubuntu-latest
+
+    environment: dev
+    strategy:
+      matrix:
+        FRUIT: ${{ fromJson(vars.FRUITS_ENVIRONMENT) }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Value of FRUIT is $FRUIT"
