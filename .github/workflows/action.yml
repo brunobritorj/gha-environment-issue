@@ -8,6 +8,7 @@ on:
 
 jobs:
 
+  ### We can get the content of FRUITS_REPO (a repository-level variable) and use it in the matrix strategy
   var-from-repo:
     name: Get variable from repository
     runs-on: ubuntu-latest
@@ -20,9 +21,10 @@ jobs:
       - uses: actions/checkout@v4
       - run: echo "Value of FRUIT is $FRUIT"
 
-  var-from-env:
+  ### We can NOT get the content of FRUITS_ENVIRONMENT (an environment-level variable) if the use is for the matrix strategy
+  var-from-environment-strategy:
     needs: var-from-repo
-    name: Get variable from environment
+    name: Get variable from environment and use in matrix strategy
     runs-on: ubuntu-latest
 
     environment: dev
@@ -33,3 +35,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: echo "Value of FRUIT is $FRUIT"
+
+  ### We can get the content of FRUITS_ENVIRONMENT (an environment-level variable) if the use is for the echo command
+  var-from-environment-echo:
+    needs: var-from-repo
+    name: Get variable from environment and print it
+    runs-on: ubuntu-latest
+
+    environment: dev
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo Value of FRUITS is ${{ var.FRUITS_ENVIRONMENT }}
